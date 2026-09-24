@@ -1,0 +1,31 @@
+# Software Safety Layer Configuration
+# WARNING: Software safety layer is a secondary supervisor and DOES NOT replace physical hardware E-stops.
+
+safety:
+  watchdog:
+    heartbeat_interval_ms: 50
+    command_timeout_ms: 150 # If no command in 150ms, follower halts immediately
+    teleoperation_timeout_ms: 200
+
+  emergency_stop:
+    software_estop_enabled: true
+    hardware_estop_monitoring: true
+    estop_gpio_pin: null # TODO: Specify GPIO or hardware register if wired
+
+  velocity_enforcement:
+    max_cartesian_linear_m_s: 0.30
+    max_cartesian_angular_rad_s: 0.70
+    max_joint_velocity_scale: 0.50 # Operate at max 50% rated speed during teleop
+    jerk_limit_m_s3: 2.0
+
+  workspace_limits:
+    table_safety_margin_m: 0.03 # 30mm buffer above workspace surface
+    enforce_bounding_box: true
+    bounding_box:
+      x: [-0.65, 0.65]
+      y: [0.25, 0.80]
+      z: [0.03, 0.70]
+
+  deadman_switch:
+    required_for_motion: true
+    input_source: "leader_grip_button" # "leader_grip_button" | "foot_pedal" | "ui_hold"

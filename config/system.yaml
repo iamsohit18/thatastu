@@ -1,0 +1,23 @@
+# System & Networking Configuration
+
+system:
+  environment: "development" # "development" | "simulation" | "production"
+  logging:
+    level: "INFO"
+    format: "json"
+    file_path: "./logs/roboteleop.log"
+    console_output: true
+
+  backend:
+    host: "0.0.0.0"
+    port: 8000
+    cors_origins: ["http://localhost:3000", "http://127.0.0.1:3000"]
+
+  storage:
+    local_dir: "./data"
+    min_disk_free_gb: 10.0
+    disk_full_threshold_pct: 92.0
+
+  hardware_watchdog:
+    enable_thread: true
+    poll_rate_hz: 10

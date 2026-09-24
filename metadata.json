@@ -1,0 +1,6 @@
+{
+  "name": "RoboTeleop Data Platform",
+  "description": "Modular robotics teleoperation and synchronized demonstration data collection platform with safety guardrails and validation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

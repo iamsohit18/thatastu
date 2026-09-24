@@ -1,0 +1,24 @@
+# Episode Recording & Dataset Generation Configuration
+
+recording:
+  output_base_dir: "./data/episodes"
+  dataset_export_dir: "./data/datasets"
+  target_telemetry_hz: 50.0
+  target_action_hz: 50.0
+
+  storage_formats:
+    telemetry: "parquet" # "parquet" | "jsonl" | "hdf5"
+    actions: "parquet"
+    video: "mp4v"        # H.264 / mp4v via OpenCV VideoWriter
+    metadata: "json"
+
+  buffer:
+    ring_buffer_size: 1000
+    flush_interval_seconds: 2.0
+
+  validation:
+    auto_validate_on_stop: true
+    min_episode_duration_s: 1.5
+    max_episode_duration_s: 300.0
+    max_dropped_frames_pct: 2.0
+    max_timestamp_jitter_ms: 15.0

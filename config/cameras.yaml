@@ -1,0 +1,40 @@
+# Multi-Camera Acquisition Configuration
+# NOTE: USB cameras use software timestamping via monotonic clock unless hardware PTP/trigger lines exist.
+
+cameras:
+  synchronization_mode: "software_monotonic" # "software_monotonic" | "hardware_ptp" | "hardware_gpio_sync"
+  max_acceptable_frame_delta_ms: 33.3 # ~1 frame duration at 30fps
+
+  devices:
+    - id: "cam_wrist"
+      name: "End-Effector Wrist Camera"
+      role: "wrist"
+      driver_type: "opencv" # "opencv" | "realsense" | "basler_pylon" | "v4l2"
+      device_index: 0
+      resolution: [640, 480]
+      fps: 30
+      encoding: "rgb8"
+      exposure_mode: "manual"
+      focus_mode: "fixed"
+
+    - id: "cam_overhead"
+      name: "Top-Down Workspace Camera"
+      role: "overhead"
+      driver_type: "opencv"
+      device_index: 1
+      resolution: [1280, 720]
+      fps: 30
+      encoding: "rgb8"
+      exposure_mode: "auto"
+      focus_mode: "fixed"
+
+    - id: "cam_side"
+      name: "Third-Person Perspective Camera"
+      role: "perspective"
+      driver_type: "opencv"
+      device_index: 2
+      resolution: [640, 480]
+      fps: 30
+      encoding: "rgb8"
+      exposure_mode: "auto"
+      focus_mode: "auto"

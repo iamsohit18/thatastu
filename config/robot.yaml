@@ -1,0 +1,51 @@
+# Robot Follower Arm Configuration
+# IMPORTANT: When switching to physical hardware, fill in vendor specific details.
+# DO NOT execute physical motion without physical E-Stop verification.
+
+robot:
+  id: "follower_arm_01"
+  name: "Follower Manipulator Arm"
+  # Driver mode: "simulation" | "vendor_adapter" | "ros2"
+  driver_mode: "simulation"
+
+  # Hardware specification (Set once vendor model is confirmed)
+  hardware_spec:
+    manufacturer: "TODO: CONFIGURATION REQUIRED (e.g., Franka Emika / Universal Robots / Kinova / KUKA / custom)"
+    model: "TODO: CONFIGURATION REQUIRED (e.g., FR3, UR5e, Gen3)"
+    controller_model: "TODO: CONFIGURATION REQUIRED"
+    num_joints: 6
+    dof: 6
+    communication_protocol: "TODO: CONFIGURATION REQUIRED (e.g. TCP/IP, UDP, Realtime Ethernet, CAN, Modbus)"
+    network:
+      ip_address: "192.168.1.100" # TODO: Verify on isolated robotics LAN
+      port: 30003                 # TODO: Verify vendor specific port
+      timeout_seconds: 1.0
+      realtime_deadline_ms: 10.0
+
+  # Physical Joint Limits (rad or deg - standard in SI radians)
+  joint_limits:
+    position_lower: [-3.14159, -1.5708, -3.14159, -3.14159, -2.0944, -6.28318]
+    position_upper: [3.14159, 1.5708, 3.14159, 3.14159, 2.0944, 6.28318]
+    velocity_max: [1.5, 1.5, 1.5, 2.0, 2.0, 2.5]       # rad/s
+    torque_max: [87.0, 87.0, 87.0, 45.0, 12.0, 12.0]  # Nm
+
+  # Cartesian Workspace Limits relative to Robot Base (meters)
+  cartesian_limits:
+    x_min: -0.70
+    x_max: 0.70
+    y_min: 0.20
+    y_max: 0.85
+    z_min: 0.05   # Table protection floor height
+    z_max: 0.75
+    linear_velocity_max: 0.35 # m/s (safe teleoperation speed cap)
+    angular_velocity_max: 0.8  # rad/s
+
+  # End Effector / Gripper configuration
+  gripper:
+    type: "parallel_jaw"
+    manufacturer: "TODO: CONFIGURATION REQUIRED (e.g. Robotiq 2F-85 / OnRobot / Custom)"
+    communication: "modbus_rtu_over_tcp" # Or digital I/O
+    min_position_mm: 0.0
+    max_position_mm: 85.0
+    max_effort_n: 100.0
+    telemetry_rate_hz: 50

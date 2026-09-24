@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: roboteleop_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: roboteleop
+      POSTGRES_USER: teleop_admin
+      POSTGRES_PASSWORD: teleop_secure_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U teleop_admin -d roboteleop"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: roboteleop_backend
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://teleop_admin:teleop_secure_password@database:5432/roboteleop
+      SIMULATION_MODE: "true"
+      ROBOT_CONFIG_PATH: "/app/config/robot.yaml"
+      DATASET_STORAGE_DIR: "/app/data"
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - ./src:/app/src
+    ports:
+      - "8000:8000"
+
+  operator_dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: roboteleop_dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: "http://localhost:8000"
+
+volumes:
+  postgres_data:

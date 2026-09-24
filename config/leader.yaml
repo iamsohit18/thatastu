@@ -1,0 +1,29 @@
+# Leader / Master Device Configuration
+# Provides reference pose / joints & gripper commands from human operator
+
+leader:
+  id: "leader_arm_01"
+  name: "Master Teleoperation Arm"
+  # Mode: "simulation" | "vendor_adapter" | "serial_kinematic" | "ros2"
+  driver_mode: "simulation"
+
+  hardware_spec:
+    manufacturer: "TODO: CONFIGURATION REQUIRED (e.g., GELLO / Aloha Master / 3Dconnexion / ForceDimension)"
+    model: "TODO: CONFIGURATION REQUIRED"
+    serial_port: "/dev/ttyUSB_LEADER"
+    baud_rate: 1000000
+    read_frequency_hz: 60.0
+
+  mapping_mode: "cartesian_and_gripper" # or "joint_to_joint" for kinematic replicas
+
+  scaling:
+    position_ratio: 0.8       # 1.0 = 1:1 motion; < 1.0 = fine-grained precision
+    orientation_ratio: 0.8
+    deadband_translation_m: 0.003 # 3mm deadzone to filter hand tremor
+    deadband_rotation_rad: 0.03   # ~1.7 deg deadband
+
+  gripper:
+    input_type: "analog_trigger" # or "potentiometer" / "load_cell"
+    trigger_min_raw: 200
+    trigger_max_raw: 3900
+    invert_direction: false
